@@ -5,8 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\" />
-    <Folder Include="Exceptions\" />
     <Folder Include="Repositories\" />
   </ItemGroup>
 
