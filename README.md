@@ -1,35 +1,36 @@
 # **ResourcesManager.Services.ParkingPlaces**
 
 ## **Description**
-ToDo
+* ToDo
 
 ## **Domain**
-* Location
-	Name
-	Address
-	Resources<Resource, Quantity> -> Quantity - quantity of the available resources for reservation
+### **Location**
+	* Name
+	* Address
+	* Resources<Resource, Quantity> -> Quantity - quantity of the available resources for reservation
 
-* Resource
-	UniqueResourceIdentifier
-	Name - resource name, it could be parking place
+### **Resource**
+	* UniqueResourceIdentifier
+	* Name - resource name, it could be parking place
 
-* User
-	Username
-	Fullname
-	Email
-	Password
-	Salt
+### **User**
+	* Username
+	* Fullname
+	* Email
+	* Password
+	* Salt
 		
-* Reservation
-	User
-	Resource
-    ResourceQuantity
-	Location
-	State
-	BeginDate
-	EndDate
+### **Reservation**
+	* User
+	* Resource
+    * ResourceQuantity
+	* Location
+	* State
+	* BeginDate
+	* EndDate
 	
-* ReservationState (enum: New, Completed, Cancelled)
+### **ReservationState**
+	* (enum: New, Completed, Cancelled)
 
 ## **Technologies:**
-* .NET5,
+	* .NET5,
