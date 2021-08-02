@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResourcesManager.Services.P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2F26EB24-736F-4AAC-B7E2-DE1FCFAEB8FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourcesManager.Services.ParkingPlaces.Core.Tests", "ResourcesManager.Services.ParkingPlaces.Core.Tests\ResourcesManager.Services.ParkingPlaces.Core.Tests.csproj", "{25296519-5DD8-47E9-A818-8FFB8F1523EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResourcesManager.Services.ParkingPlaces.Core.Tests", "ResourcesManager.Services.ParkingPlaces.Core.Tests\ResourcesManager.Services.ParkingPlaces.Core.Tests.csproj", "{25296519-5DD8-47E9-A818-8FFB8F1523EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourcesManager.Services.Libraries", "ResourcesManager.Services.Libraries\ResourcesManager.Services.Libraries.csproj", "{3755BC04-689B-48AC-A36B-9204A50B9476}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{25296519-5DD8-47E9-A818-8FFB8F1523EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25296519-5DD8-47E9-A818-8FFB8F1523EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25296519-5DD8-47E9-A818-8FFB8F1523EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3755BC04-689B-48AC-A36B-9204A50B9476}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3755BC04-689B-48AC-A36B-9204A50B9476}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3755BC04-689B-48AC-A36B-9204A50B9476}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3755BC04-689B-48AC-A36B-9204A50B9476}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
