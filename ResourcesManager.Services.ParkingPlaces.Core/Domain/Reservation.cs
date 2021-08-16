@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ResourcesManager.Services.ParkingPlaces.Core.Exceptions;
+using System;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
@@ -12,5 +13,84 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         public ReservationState State { get; private set; }
         public DateTime BeginDate { get; private set; }
         public DateTime EndDate { get; private set; }
+        public DateTime CreatedAt { get; private set; }
+        public DateTime UpdatedAt { get; private set; }
+
+        private Reservation()
+        {
+        }
+
+        public Reservation(User user, Resource resource, int resourceQuantity, Location location,
+            DateTime beginDate, DateTime endDate)
+        {
+            this.Id = Guid.NewGuid();
+            this.CreatedAt = DateTime.UtcNow;
+            SetUser(user);
+            SetResource(resource);
+            SetQuantity(resourceQuantity);
+            SetLocation(location);
+            SetBeginDate(beginDate);
+            SetEndDate(endDate);
+        }
+
+        private void SetUser(User user)
+        {
+            if (user is null)
+            {
+                throw new NullEntityException<User>();
+            }
+
+            this.User = user;
+        }
+
+        private void SetResource(Resource resource)
+        {
+            if (resource is null)
+            {
+                throw new NullEntityException<Resource>();
+            }
+
+            this.Resource = resource;
+        }
+
+        private void SetQuantity(int resourceQuantity)
+        {
+            if (resourceQuantity <= 0)
+            {
+                throw new InvalidIntValueException(nameof(resourceQuantity));
+            }
+
+            this.ResourceQuantity = resourceQuantity;
+        }
+
+        private void SetLocation(Location location)
+        {
+            if (location is null)
+            {
+                throw new NullEntityException<Location>();
+            }
+
+            this.Location = location;
+        }
+
+        private void SetBeginDate(DateTime beginDate)
+        {
+            if (beginDate < DateTime.UtcNow)
+            {
+                throw new InvalidDateTimeException(beginDate);
+            }
+
+            this.BeginDate = beginDate;
+        }
+
+        private void SetEndDate(DateTime endDate)
+        {
+            if (endDate < DateTime.UtcNow || endDate < this.BeginDate)
+            {
+                throw new InvalidDateTimeException(endDate);
+            }
+
+            this.EndDate = endDate;
+        }
     }
 }

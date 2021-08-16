@@ -1,9 +1,8 @@
 ﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
+using ResourcesManager.Services.ParkingPlaces.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
@@ -12,10 +11,17 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         public Guid Id { get; private set; }
         public Name Name { get; private set; }
         public Address Address { get; private set; }
-        public IDictionary<Resource, int> Resources { get; private set; }
+        private IDictionary<Resource, int> resources = new Dictionary<Resource, int>();
+        public IDictionary<Resource, int> Resources
+        {
+            get => this.resources;
+            private set => this.resources = value;
+        }
+
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
 
+        #region CTOR
         private Location()
         {
         }
@@ -26,17 +32,64 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             this.CreatedAt = DateTime.UtcNow;
             SetName(name);
             SetAddress(address);
-
         }
+        #endregion
 
         private void SetAddress(Address address)
         {
-            throw new NotImplementedException();
+            if (address is null)
+            {
+                throw new NullEntityException<Address>();
+            }
+
+            this.Address = address;
         }
 
         private void SetName(Name name)
         {
-            throw new NotImplementedException();
+            if (name is null)
+            {
+                throw new NullEntityException<Name>();
+            }
+
+            this.Name = name;
+        }
+
+        public void AddResource(Resource resource, int quantity)
+        {
+            if (resource is null)
+            {
+                throw new NullEntityException<Resource>();
+            }
+            if (quantity <= 0)
+            {
+                throw new InvalidIntValueException(nameof(quantity));
+            }
+
+            var resourceInDictionary = this.resources.Any(x => x.Key == resource);
+            if (resourceInDictionary)
+            {
+                this.resources[resource] = this.resources[resource] + quantity;
+            }
+            else if(!resourceInDictionary)
+            {
+                this.resources.Add(resource, quantity);
+            }
+        }
+
+        public void RemoveResource(Resource resource)
+        {
+            if (resource is null)
+            {
+                throw new NullEntityException<Resource>();
+            }
+
+            var resourceInDictionary = this.resources.FirstOrDefault(x => x.Key == resource);
+
+            if (resourceInDictionary.Key is not null)
+            {
+                this.resources.Remove(resource);
+            }
         }
     }
 }

@@ -17,8 +17,4 @@
     <ProjectReference Include="..\ResourcesManager.Services.ParkingPlaces.Core\ResourcesManager.Services.ParkingPlaces.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Domain\" />
-  </ItemGroup>
-
 </Project>

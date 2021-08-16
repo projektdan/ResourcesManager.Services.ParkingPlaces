@@ -23,5 +23,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Exceptions
         public static string EmptyLastname;
         public static string EmptyEmail;
         public static string InvalidRegex;
+        public static string EmptyName;
+        public static string EmptyAddress;
+        public static string EmptyUniqueResourceIdentifier;
+        public static string InvalidIntvalue;
     }
 }

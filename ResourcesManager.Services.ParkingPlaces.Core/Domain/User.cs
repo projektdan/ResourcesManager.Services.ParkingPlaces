@@ -46,9 +46,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             if (this.Username is not null && this.Username != username)
             {
                 Update();
+                this.Username = username;
             }
 
-            this.Username = username;
         }
 
         public void SetPassword(Password password, IPasswordHasher<User> passwordHasher)
@@ -62,9 +62,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             if (this.Hash.IsEmpty() && this.Hash != newHash)
             {
                 Update();
+                this.Hash = newHash;
             }
 
-            this.Hash = newHash;
         }
 
         public bool ValidatePassword(Password password, IPasswordHasher<User> passwordHasher)
@@ -80,9 +80,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             if (this.Firstname is not null && this.Firstname != firstname)
             {
                 Update();
+                this.Firstname = firstname;
             }
 
-            this.Firstname = firstname;
         }
 
         public void SetLastname(Lastname lastname)
@@ -95,9 +95,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             if (this.Lastname is not null && this.Lastname != lastname)
             {
                 Update();
+                this.Lastname = lastname;
             }
 
-            this.Lastname = lastname;
         }
 
         public void SetEmail(Email email)
@@ -110,9 +110,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             if (this.Email is not null && this.Email != email)
             {
                 Update();
+                this.Email = email;
             }
 
-            this.Email = email;
         }
 
         private void Update()
