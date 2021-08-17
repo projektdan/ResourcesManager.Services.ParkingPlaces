@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
-    public class Location
+    public class Location : DatabaseEntityBase
     {
         public Guid Id { get; private set; }
         public Name Name { get; private set; }
@@ -19,7 +19,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         }
 
         public DateTime CreatedAt { get; private set; }
-        public DateTime UpdatedAt { get; private set; }
 
         #region CTOR
         private Location()
@@ -35,21 +34,31 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         }
         #endregion
 
-        private void SetAddress(Address address)
+        public void SetAddress(Address address)
         {
             if (address is null)
             {
                 throw new NullEntityException<Address>();
             }
 
+            if (this.Address != address)
+            {
+                Update();
+            }
+
             this.Address = address;
         }
 
-        private void SetName(Name name)
+        public void SetName(Name name)
         {
             if (name is null)
             {
                 throw new NullEntityException<Name>();
+            }
+
+            if (this.Name != name)
+            {
+                Update();
             }
 
             this.Name = name;
@@ -75,6 +84,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             {
                 this.resources.Add(resource, quantity);
             }
+
+            Update();
         }
 
         public void RemoveResource(Resource resource)
@@ -90,6 +101,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             {
                 this.resources.Remove(resource);
             }
+
+            Update();
         }
     }
 }

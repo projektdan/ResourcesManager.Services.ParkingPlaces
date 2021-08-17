@@ -29,6 +29,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             SetResource(resource);
             SetQuantity(resourceQuantity);
             SetLocation(location);
+            SetState(ReservationState.New);
             SetBeginDate(beginDate);
             SetEndDate(endDate);
         }
@@ -73,6 +74,11 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             this.Location = location;
         }
 
+        private void SetState(ReservationState reservationState)
+        {
+            this.State = reservationState;
+        }
+
         private void SetBeginDate(DateTime beginDate)
         {
             if (beginDate < DateTime.UtcNow)
@@ -92,5 +98,16 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 
             this.EndDate = endDate;
         }
+
+        public void UpdateState(ReservationState reservationState)
+        {
+
+            this.State = reservationState;
+            Update();
+
+        }
+
+        private void Update()
+            => this.UpdatedAt = DateTime.UtcNow;
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
+using ResourcesManager.Services.ParkingPlaces.Core.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,13 +14,27 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
     [TestClass]
     public class LocationTests
     {
+        private Name name;
+        private Address address;
+        private UniqueResourceIdentifier uniqueResourceIdentifier;
+        private Name resourceName;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            this.name = new Name("Nobel Tower");
+            this.address = new Address("Poznań, Dąbrowskiego");
+            this.uniqueResourceIdentifier = new UniqueResourceIdentifier("nobel_tower_parking_place");
+            this.resourceName = new Name("Parking Place");
+        }
+
         [TestMethod]
         public void CreateLocation_ValidParameters_ShouldCreate()
         {
-            var name = new Name("Nobel Tower");
-            var address = new Address("Poznań, Dąbrowskiego");
+            //ACT
             var location = new Location(name, address);
 
+            //ASSERT
             location.Id.Should().NotBeEmpty();
             location.Address.Should().NotBeNull();
             location.Name.Should().NotBeNull();
@@ -27,43 +42,144 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
         }
 
         [TestMethod]
-        //[DataRow(1, 5, 10)]
-        public void AddResource_CreateLocationAndResource_ShouldReturnResource()
+        public void SetName_ShouldUpdateNameAndSetDate_ReturnedUpdatedDate()
         {
-            var name = new Name("Nobel Tower");
-            var address = new Address("Poznań, Dąbrowskiego");
+            //ARRANGE
             var location = new Location(name, address);
+            var newLocationName = "Apator Powogaz";
+            var updatedName = new Name(newLocationName);
 
-            var uniqueResourceIdentifier = new UniqueResourceIdentifier("nobel_tower_parking_place");
-            var resourceName = new Name("Parking Place");
-            var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
+            //ACT
+            location.SetName(updatedName);
 
-            location.AddResource(parkingResource, 1);
-
-            location.Resources.Count().Should().BeGreaterThan(0);
-
+            //ASSERT
+            Assert.IsNotNull(location.UpdatedAt);
+            location.UpdatedAt.Should().BeAfter(location.CreatedAt);
+            location.Name.Value.Should().BeSameAs(newLocationName);
         }
 
         [TestMethod]
-        public void AddResource_CreateLocationAndAddExistingResource_SholudIncreaseTheValue()
+        public void SetAddress_ShouldUpdateAddressAndSetDate_ReturnedUpdatedDate()
         {
-            var name = new Name("Nobel Tower");
-            var address = new Address("Poznań, Dąbrowskiego");
+            //ARRANGE
             var location = new Location(name, address);
+            var newLocationAddress = "Poznań, Dąbrowskiego";
+            var updatedAddress = new Address(newLocationAddress);
 
-            var uniqueResourceIdentifier = new UniqueResourceIdentifier("nobel_tower_parking_place");
-            var resourceName = new Name("Parking Place");
+            //ACT
+            location.SetAddress(updatedAddress);
+
+            //ASSERT
+            Assert.IsNotNull(location.UpdatedAt);
+            location.UpdatedAt.Should().BeAfter(location.CreatedAt);
+            location.Address.Value.Should().BeSameAs(newLocationAddress);
+        }
+
+        [TestMethod]
+        public void AddResource_CreateLocationAndResource_ShouldReturnResource()
+        {
+            //ARRANGE
+            var location = new Location(name, address);
+            var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
+            
+            //ACT
+            location.AddResource(parkingResource, 1);
+
+            //ASSERT
+            location.Resources.Count().Should().BeGreaterThan(0);
+            Assert.IsNotNull(location.UpdatedAt);
+        }
+
+        [TestMethod]
+        public void AddResource_CreateLocationAndAddExistingResource_SholudIncreaseQuantity()
+        {
+            //ARRANGE
+            var location = new Location(name, address);
             var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
 
+            //ACT
+            location.AddResource(parkingResource, 1);
             location.AddResource(parkingResource, 1);
 
-            location.AddResource(parkingResource, 1);
-
+            //ASSERT
             var expectedResourcesCount = 1;
             location.Resources.Count().Should().Be(expectedResourcesCount);
 
             var expectedResourceQuantity = 2;
             location.Resources.Where(x => x.Key == parkingResource).FirstOrDefault().Value.Should().Be(expectedResourceQuantity);
         }
+
+        [TestMethod]
+        public void AddResource_CreateLocationAndAddNotExistingResource_SholudAdd()
+        {
+            //ARRANGE
+            var location = new Location(name, address);
+            var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
+
+            var newUniqueResourceIdentifier = new UniqueResourceIdentifier("nobel_tower_parking_place");
+            var newResourceName = new Name("Parking Place");
+            var newParkingResource = new Resource(newUniqueResourceIdentifier, newResourceName);
+
+            //ACT
+            location.AddResource(parkingResource, 1);
+            location.AddResource(newParkingResource, 1);
+
+            //ASSERT
+            var expectedResourcesCount = 2;
+            location.Resources.Count().Should().Be(expectedResourcesCount);
+
+            var expectedResourceQuantity = 1;
+            location.Resources.Where(x => x.Key == parkingResource).FirstOrDefault().Value.Should().Be(expectedResourceQuantity);
+        }
+
+        [TestMethod]
+        public void RemoveResource_AddAndRemoveExistingResource_ShouldSuccess()
+        {
+            //ARRANGE
+            var location = new Location(name, address);
+            var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
+
+            //ACT
+            location.AddResource(parkingResource, 1);
+            location.RemoveResource(parkingResource);
+
+            //ASSERT
+            var expectedResourcesCount = 0;
+            location.Resources.Count().Should().Be(expectedResourcesCount);
+        }
+
+        [TestMethod]
+        [DataRow(0)]
+        [DataRow(-1)]
+        [ExpectedException(typeof(InvalidIntValueException))]
+        public void AddResource_CreateLocationAndResourceWithIncorrectQuantity_ShouldFailed(int incorrectQuantity)
+        {
+            //ARRANGE
+            var location = new Location(name, address);
+            var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
+
+            //ACT
+            location.AddResource(parkingResource, incorrectQuantity);
+
+            //ASSERT
+            Assert.IsNull(location.Resources);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(NullEntityException<Resource>))]
+        public void AddResource_CreateLocationAndAddNullResource_ShouldFailed()
+        {
+            //ARRANGE
+            var location = new Location(name, address);
+            Resource parkingResource = null;
+
+            //ACT
+            location.AddResource(parkingResource, 1);
+
+            //ASSERT
+            Assert.IsNull(location.Resources);
+        }
+
+
     }
 }
