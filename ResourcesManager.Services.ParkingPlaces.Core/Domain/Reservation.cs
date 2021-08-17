@@ -3,7 +3,7 @@ using System;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
-    public class Reservation
+    public class Reservation : DatabaseEntityBase
     {
         public Guid Id { get; private set; }
         public User User { get; private set; }
@@ -14,7 +14,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         public DateTime BeginDate { get; private set; }
         public DateTime EndDate { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public DateTime UpdatedAt { get; private set; }
 
         private Reservation()
         {
@@ -33,7 +32,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             SetBeginDate(beginDate);
             SetEndDate(endDate);
         }
-
+        //TODO : Change setters to public and updatedAt
         private void SetUser(User user)
         {
             if (user is null)
@@ -106,8 +105,5 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             Update();
 
         }
-
-        private void Update()
-            => this.UpdatedAt = DateTime.UtcNow;
     }
 }

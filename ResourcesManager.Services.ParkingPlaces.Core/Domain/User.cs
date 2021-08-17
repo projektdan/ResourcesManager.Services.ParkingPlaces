@@ -7,7 +7,7 @@ using PasswordVerificationResult = Microsoft.AspNetCore.Identity.PasswordVerific
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
-    public class User
+    public class User : DatabaseEntityBase
     {
         public Guid Id { get; private set; }
         public Username Username { get; private set; }
@@ -17,7 +17,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         public Lastname Lastname { get; private set; }
         public Email Email { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public DateTime UpdatedAt { get; private set; }
 
         #region CTOR
         private User()
@@ -33,9 +32,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             SetPassword(password, passwordHasher);
             SetFirstname(firstname);
             SetLastname(lastname);
-        } 
+        }
         #endregion
-
+        //TODO : Change setters to public and updatedAt
         public void SetUsername(Username username)
         {
             if (username is null)
@@ -114,8 +113,5 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             }
 
         }
-
-        private void Update()
-            => this.UpdatedAt = DateTime.UtcNow;
     }
 }

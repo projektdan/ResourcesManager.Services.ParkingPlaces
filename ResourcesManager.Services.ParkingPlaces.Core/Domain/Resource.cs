@@ -4,13 +4,12 @@ using System;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
-    public class Resource
+    public class Resource : DatabaseEntityBase
     {
         public Guid Id { get; private set; }
         public UniqueResourceIdentifier UniqueResourceIdentifier { get; private set; }
         public Name Name { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public DateTime UpdatedAt { get; private set; }
 
         private Resource()
         {
@@ -53,8 +52,5 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             
             this.Name = name;
         }
-
-        private void Update()
-            => this.UpdatedAt = DateTime.UtcNow;
     }
 }
