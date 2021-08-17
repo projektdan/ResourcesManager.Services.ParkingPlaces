@@ -34,8 +34,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             if (this.UniqueResourceIdentifier is not null && this.UniqueResourceIdentifier != uniqueResourceIdentifier)
             {
                 Update();
-                this.UniqueResourceIdentifier = uniqueResourceIdentifier;
             }
+
+            this.UniqueResourceIdentifier = uniqueResourceIdentifier;
         }
 
         public void SetName(Name name)
@@ -48,8 +49,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             if (this.Name is not null && this.Name != name)
             {
                 Update();
-                this.Name = name;
             }
+            
+            this.Name = name;
         }
 
         private void Update()
