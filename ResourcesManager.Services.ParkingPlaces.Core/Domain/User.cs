@@ -34,7 +34,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             SetLastname(lastname);
         }
         #endregion
-        //TODO : Change setters to public and updatedAt
+        
         public void SetUsername(Username username)
         {
             if (username is null)
@@ -101,7 +101,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 
         public void SetEmail(Email email)
         {
-            if (Email is null)
+            if (email is null)
             {
                 throw new NullEntityException<Email>();
             }

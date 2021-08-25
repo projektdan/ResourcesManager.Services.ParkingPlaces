@@ -4,30 +4,13 @@ using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 using ResourcesManager.Services.ParkingPlaces.Core.Exceptions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
 {
     [TestClass]
-    public class LocationTests
+    public class LocationTests : BaseTests
     {
-        private Name name;
-        private Address address;
-        private UniqueResourceIdentifier uniqueResourceIdentifier;
-        private Name resourceName;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.name = new Name("Nobel Tower");
-            this.address = new Address("Poznań, Dąbrowskiego");
-            this.uniqueResourceIdentifier = new UniqueResourceIdentifier("nobel_tower_parking_place");
-            this.resourceName = new Name("Parking Place");
-        }
-
         [TestMethod]
         public void CreateLocation_ValidParameters_ShouldCreate()
         {
@@ -63,7 +46,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
         {
             //ARRANGE
             var location = new Location(name, address);
-            var newLocationAddress = "Poznań, Dąbrowskiego";
+            var newLocationAddress = "Poznań, Janickiego";
             var updatedAddress = new Address(newLocationAddress);
 
             //ACT

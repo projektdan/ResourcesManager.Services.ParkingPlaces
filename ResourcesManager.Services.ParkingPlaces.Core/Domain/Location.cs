@@ -41,7 +41,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
                 throw new NullEntityException<Address>();
             }
 
-            if (this.Address != address)
+            if (this.Address != address && this.Address is not null)
             {
                 Update();
             }
@@ -56,7 +56,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
                 throw new NullEntityException<Name>();
             }
 
-            if (this.Name != name)
+            if (this.Name != name && this.Name is not null)
             {
                 Update();
             }

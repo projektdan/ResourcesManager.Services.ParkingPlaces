@@ -6,7 +6,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects
 {
     public record Email
     {
-        public static readonly Regex Regex = new Regex(@" ^\w + ([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$");
+        public static readonly Regex Regex = new Regex(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
 
         public string Value { get; }
 

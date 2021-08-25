@@ -32,78 +32,105 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             SetBeginDate(beginDate);
             SetEndDate(endDate);
         }
-        //TODO : Change setters to public and updatedAt
-        private void SetUser(User user)
+        
+        public void SetUser(User user)
         {
             if (user is null)
             {
                 throw new NullEntityException<User>();
             }
 
+            if (this.User != user && this.User is not null)
+            {
+                Update();
+            }
+
             this.User = user;
         }
 
-        private void SetResource(Resource resource)
+        public void SetResource(Resource resource)
         {
             if (resource is null)
             {
                 throw new NullEntityException<Resource>();
             }
 
+            if (this.Resource != resource && this.Resource is not null)
+            {
+                Update();
+            }
+
             this.Resource = resource;
         }
 
-        private void SetQuantity(int resourceQuantity)
+        public void SetQuantity(int resourceQuantity)
         {
             if (resourceQuantity <= 0)
             {
                 throw new InvalidIntValueException(nameof(resourceQuantity));
             }
 
+            if (this.ResourceQuantity != resourceQuantity && this.ResourceQuantity > 0)
+            {
+                Update();
+            }
+
             this.ResourceQuantity = resourceQuantity;
         }
 
-        private void SetLocation(Location location)
+        public void SetLocation(Location location)
         {
             if (location is null)
             {
                 throw new NullEntityException<Location>();
             }
 
+            if (this.Location != location && this.Location is not null)
+            {
+                Update();
+            }
+
             this.Location = location;
         }
 
-        private void SetState(ReservationState reservationState)
+        public void SetState(ReservationState reservationState)
         {
+            if (this.State != reservationState)
+            {
+                Update();
+            }
+
             this.State = reservationState;
         }
 
-        private void SetBeginDate(DateTime beginDate)
+        public void SetBeginDate(DateTime beginDate)
         {
             if (beginDate < DateTime.UtcNow)
             {
                 throw new InvalidDateTimeException(beginDate);
             }
 
+            if (this.BeginDate != beginDate)
+            {
+                Update();
+            }
+
             this.BeginDate = beginDate;
         }
 
-        private void SetEndDate(DateTime endDate)
+        public void SetEndDate(DateTime endDate)
         {
             if (endDate < DateTime.UtcNow || endDate < this.BeginDate)
             {
                 throw new InvalidDateTimeException(endDate);
             }
 
+            if (this.EndDate != endDate)
+            {
+                Update();
+            }
+
             this.EndDate = endDate;
-        }
-
-        public void UpdateState(ReservationState reservationState)
-        {
-
-            this.State = reservationState;
-            Update();
-
         }
     }
 }
