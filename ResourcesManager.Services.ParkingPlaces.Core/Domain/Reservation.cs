@@ -11,8 +11,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         public int ResourceQuantity { get; private set; }
         public Location Location { get; private set; }
         public ReservationState State { get; private set; }
-        public DateTime BeginDate { get; private set; }
-        public DateTime EndDate { get; private set; }
+        public DateTime? BeginDate { get; private set; }
+        public DateTime? EndDate { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
         private Reservation()
@@ -110,7 +110,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
                 throw new InvalidDateTimeException(beginDate);
             }
 
-            if (this.BeginDate != beginDate)
+            if (this.BeginDate != beginDate && this.BeginDate.HasValue)
             {
                 Update();
             }
@@ -125,7 +125,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
                 throw new InvalidDateTimeException(endDate);
             }
 
-            if (this.EndDate != endDate)
+            if (this.EndDate != endDate && this.EndDate.HasValue)
             {
                 Update();
             }

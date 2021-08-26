@@ -26,6 +26,11 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
         protected PasswordHasher<User> passwordHasher = new();
         protected User user;
 
+        protected Resource parkingResource;
+        protected Location location;
+
+        protected readonly DateTime todayDateTime = DateTime.Now;
+        protected DateTime tomorrowDateTime;
 
         [TestInitialize]
         public void Initialize()
@@ -42,6 +47,11 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
             this.lastname = new Lastname("Nowak");
 
             this.user = new User(email, username, password, passwordHasher, firstname, lastname);
+
+            this.parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
+            this.location = new Location(name, address);
+
+            this.tomorrowDateTime = this.todayDateTime.AddDays(1);
         }
 
     }

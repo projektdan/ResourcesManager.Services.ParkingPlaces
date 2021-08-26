@@ -22,6 +22,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
             location.Address.Should().NotBeNull();
             location.Name.Should().NotBeNull();
             location.CreatedAt.Should().BeBefore(DateTime.UtcNow);
+            location.UpdatedAt.HasValue.Should().BeFalse();
         }
 
         [TestMethod]
