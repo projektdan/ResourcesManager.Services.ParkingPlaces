@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Repositories
 {
-    public interface IReservationRepository
+    public interface IReservationRepository : IRepository
     {
         Task AddAsync(Reservation reservation);
         Task<Reservation> GetAsync(Guid id);
