@@ -11,6 +11,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         public Name Name { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
+        #region CTOR
         private Resource()
         {
         }
@@ -22,6 +23,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             SetUniqueResourceIdentifier(uniqueResourceIdentifier);
             SetName(name);
         }
+        #endregion
 
         public void SetUniqueResourceIdentifier(UniqueResourceIdentifier uniqueResourceIdentifier)
         {

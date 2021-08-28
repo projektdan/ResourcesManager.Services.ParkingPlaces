@@ -15,6 +15,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         public DateTime? EndDate { get; private set; }
         public DateTime CreatedAt { get; private set; }
 
+        #region CTOR
         private Reservation()
         {
         }
@@ -31,8 +32,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             SetState(ReservationState.New);
             SetBeginDate(beginDate);
             SetEndDate(endDate);
-        }
-        
+        } 
+        #endregion
+
         public void SetUser(User user)
         {
             if (user is null)
