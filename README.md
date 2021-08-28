@@ -1,6 +1,12 @@
 # **ResourcesManager.Services.ParkingPlaces**
 
 ## **Description**
+* Resource Manager is a simple app which has functionality to book a company's resource, eg: parking place.
+
+### **Architecture Overview**
+* ToDo
+
+### **User Stories**
 * ToDo
 
 ## **Domain**
