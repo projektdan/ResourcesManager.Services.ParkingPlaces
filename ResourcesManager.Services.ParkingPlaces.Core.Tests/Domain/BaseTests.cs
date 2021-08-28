@@ -3,14 +3,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
 {
-    
+
     public abstract class BaseTests
     {
         protected Name name;
@@ -31,6 +27,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
 
         protected readonly DateTime todayDateTime = DateTime.Now;
         protected DateTime tomorrowDateTime;
+
+        protected readonly int resourceQuantity = 5;
 
         [TestInitialize]
         public void Initialize()
