@@ -5,8 +5,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects
 {
     public record Username
     {
-        private const int MinLength = 3;
-        private const int MaxLength = 30;
+        public const int MinLength = 3;
+        public const int MaxLength = 30;
 
         public string Value { get; }
         public Username(string value)
