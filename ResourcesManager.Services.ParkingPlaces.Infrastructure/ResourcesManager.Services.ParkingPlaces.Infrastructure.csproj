@@ -12,14 +12,15 @@
     <Folder Include="Cqrs\Handlers\" />
     <Folder Include="Cqrs\Requests\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Ioc\Modules\" />
     <Folder Include="Models\Dtos\" />
     <Folder Include="Models\Payloads\" />
-    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
   </ItemGroup>
 

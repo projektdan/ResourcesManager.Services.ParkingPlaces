@@ -9,6 +9,10 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects
         public const int MaxLength = 26;
         public string Value { get; }
 
+        private Name()
+        {
+        }
+
         public Name(string value)
         {
             value.GetValidator()

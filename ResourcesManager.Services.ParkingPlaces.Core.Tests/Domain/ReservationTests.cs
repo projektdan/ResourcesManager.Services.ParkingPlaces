@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 using System;
+using System.Linq;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
 {
@@ -13,7 +14,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
         public void CreateReservation_ValidParameters_ShouldCreate()
         {
             //ARRANGE
-
+            var newReservationState = new ReservationState("New");
             //ACT
             var reservation = new Reservation(user, parkingResource, resourceQuantity, location, todayDateTime, tomorrowDateTime);
 
@@ -24,7 +25,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
             reservation.ResourceQuantity.Should().Be(resourceQuantity);
             reservation.Location.Should().NotBeNull();
             reservation.CreatedAt.Should().BeBefore(DateTime.UtcNow);
-            reservation.State.Should().Be(ReservationState.New);
+            reservation.State.Should().Equals(newReservationState);
             reservation.BeginDate.HasValue.Should().BeTrue();
             reservation.EndDate.Should().BeAfter(reservation.BeginDate.Value);
             reservation.EndDate.HasValue.Should().BeTrue();
@@ -94,7 +95,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
             reservation.Location.Should().Be(newLocation);
             reservation.UpdatedAt.HasValue.Should().BeTrue();
         }
-
+        //TODO : Change enum to class
         [TestMethod]
         public void SetState_SetNewStateToExistsReservation_ShouldSet()
         {
@@ -102,7 +103,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
             var reservation = new Reservation(user, parkingResource, resourceQuantity, location, todayDateTime, tomorrowDateTime);
 
             //ACT
-            var newReservationState = ReservationState.Completed;
+            var newReservationState = new ReservationState("Completed");
             reservation.SetState(newReservationState);
 
             //ASSERT

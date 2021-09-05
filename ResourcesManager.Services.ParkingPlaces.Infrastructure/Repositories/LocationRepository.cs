@@ -1,16 +1,20 @@
 ﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 using ResourcesManager.Services.ParkingPlaces.Core.Repositories;
+using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
 {
     public class LocationRepository : ILocationRepository
     {
+        private readonly AppDbContext context;
+
+        public LocationRepository(AppDbContext context)
+        {
+            this.context = context;
+        }
         public Task AddAsync(Location location)
         {
             throw new NotImplementedException();

@@ -1,5 +1,6 @@
 ﻿using ResourcesManager.Services.ParkingPlaces.Core.Exceptions;
 using System;
+using System.Linq;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
@@ -29,7 +30,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             SetResource(resource);
             SetQuantity(resourceQuantity);
             SetLocation(location);
-            SetState(ReservationState.New);
+            SetState(new ReservationState("New"));
             SetBeginDate(beginDate);
             SetEndDate(endDate);
         } 
@@ -97,7 +98,12 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 
         public void SetState(ReservationState reservationState)
         {
-            if (this.State != reservationState)
+            if (reservationState is null)
+            {
+                throw new NullEntityException<Location>();
+            }
+
+            if (this.State != reservationState && this.State is not null)
             {
                 Update();
             }

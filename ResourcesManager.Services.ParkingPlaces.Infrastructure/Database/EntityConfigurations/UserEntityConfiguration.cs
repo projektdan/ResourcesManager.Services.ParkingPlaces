@@ -10,24 +10,29 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Database.Entity
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("Users");
-            builder.HasKey(x => x.Id);
-            builder.HasIndex(x => x.Username);
+            builder.HasKey(e => e.Id);
+            builder.HasIndex(e => e.Username);
 
-            builder.Property(x => x.Id).HasDefaultValueSql("uuid_generate_v1()");
-            builder.Property(x => x.CreatedAt).HasDefaultValueSql("now() at time zone 'utc'").IsRequired();
-            builder.Property(x => x.Username)
+            builder.Property(e => e.Id)
+                .HasDefaultValueSql("uuid_generate_v1()");
+            builder.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("now() at time zone 'utc'").IsRequired();
+            builder.Property(e => e.Username)
                 .HasConversion(c => c.Value, c => new Username(c))
                 .HasMaxLength(Username.MaxLength).IsRequired();
-            builder.Property(x => x.Hash).IsRequired();
-            builder.Property(x => x.Firstname)
+            builder.Property(e => e.Hash).IsRequired();
+            builder.Property(e => e.Firstname)
                 .HasConversion(c => c.Value, c => new Firstname(c))
                 .HasMaxLength(Firstname.MaxLength).IsRequired();
-            builder.Property(x => x.Lastname)
+            builder.Property(e => e.Lastname)
                 .HasConversion(c => c.Value, c => new Lastname(c))
                 .HasMaxLength(Lastname.MaxLength).IsRequired();
-            builder.Property(x => x.Email)
+            builder.Property(e => e.Email)
                 .HasConversion(c => c.Value, c => new Email(c))
                 .HasMaxLength(128).IsRequired();
+            builder.Property(e => e.Password)
+                .HasConversion(c => c.Value, c => new Password(c))
+                .IsRequired();
         }
     }
 }

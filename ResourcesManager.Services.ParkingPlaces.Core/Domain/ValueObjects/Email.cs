@@ -10,6 +10,10 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects
 
         public string Value { get; }
 
+        private Email()
+        {
+        }
+
         public Email(string value)
         {
             value.GetValidator()

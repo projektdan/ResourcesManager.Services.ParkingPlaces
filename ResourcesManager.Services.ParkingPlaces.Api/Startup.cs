@@ -5,6 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ResourcesManager.Services.Libraries.Options;
+using ResourcesManager.Services.ParkingPlaces.Api.Extensions;
+using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
+using ResourcesManager.Services.ParkingPlaces.Infrastructure.Extensions;
+using ResourcesManager.Services.ParkingPlaces.Infrastructure.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +19,15 @@ namespace ResourcesManager.Services.ParkingPlaces.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
+
+            this.Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -26,6 +37,10 @@ namespace ResourcesManager.Services.ParkingPlaces.Api
         {
 
             services.AddControllers();
+            services.AddDbContext<AppDbContext>();
+            services.RegisterExternalModules();
+            services.RegisterOptions<DatabaseOptions>("database");
+            services.RegisterOptions<SeedOptions>("seed");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +59,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.ApplyMigration<AppDbContext>();
+            app.UseSeed();
         }
     }
 }

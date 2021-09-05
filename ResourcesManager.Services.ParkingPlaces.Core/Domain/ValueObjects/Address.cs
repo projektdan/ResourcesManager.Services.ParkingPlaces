@@ -9,13 +9,17 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects
         public const int MaxLength = 100;
         public string Value { get; }
 
+        private Address()
+        {
+        }
+
         public Address(string value)
         {
             value.GetValidator()
                 .Throw(new EmptyStringException(ErrorCodes.EmptyAddress, nameof(Address)))
-                .WhenIsEmpty()
+                    .WhenIsEmpty()
                 .Throw(new InvalidStringLengthException(nameof(Address), MinLength, MaxLength))
-                .WhenLengthIsNotBetween(MinLength, MaxLength)
+                    .WhenLengthIsNotBetween(MinLength, MaxLength)
                 .Validate();
 
             this.Value = value;

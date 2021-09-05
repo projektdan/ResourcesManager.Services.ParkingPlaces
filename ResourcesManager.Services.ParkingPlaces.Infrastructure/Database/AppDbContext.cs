@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ResourcesManager.Services.Libraries.Options;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain;
+using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database.EntityConfigurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Database
         internal DbSet<Reservation> Reservations { get; set; }
         internal DbSet<Resource> Resources { get; set; }
         internal DbSet<User> Users { get; set; }
+        internal DbSet<ReservationState> ReservationStates { get; set; }
 
         public AppDbContext(DatabaseOptions databaseOptions)
         {
@@ -28,6 +30,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Database
             dbOptionsBuilder.UseNpgsql(this.databaseOptions.ConnectionString, options =>
             {
                 options.MigrationsHistoryTable("__EFMigrationsHistory", this.databaseOptions.Schema);
+                options.MigrationsAssembly("ResourcesManager.Services.ParkingPlaces.Api");
             });
 
             base.OnConfiguring(dbOptionsBuilder);
@@ -38,8 +41,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Database
             modelBuilder.HasDefaultSchema(this.databaseOptions.Schema);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
             modelBuilder.HasPostgresExtension("uuid-ossp");
+
         }
-
-
     }
 }

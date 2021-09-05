@@ -9,6 +9,11 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects
         public const int MaxLength = 30;
 
         public string Value { get; }
+
+        private Username()
+        {
+        }
+
         public Username(string value)
         {
             value = value?.Trim();

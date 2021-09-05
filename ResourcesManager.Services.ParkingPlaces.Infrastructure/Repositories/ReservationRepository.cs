@@ -1,15 +1,19 @@
 ﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Core.Repositories;
+using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
 {
     public class ReservationRepository : IReservationRepository
     {
+        private readonly AppDbContext context;
+
+        public ReservationRepository(AppDbContext context)
+        {
+            this.context = context;
+        }
         public Task AddAsync(Reservation reservation)
         {
             throw new NotImplementedException();
