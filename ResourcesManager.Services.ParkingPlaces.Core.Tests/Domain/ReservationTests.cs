@@ -11,10 +11,35 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
     public class ReservationTests : BaseTests
     {
         [TestMethod]
-        public void CreateReservation_ValidParameters_ShouldCreate()
+        public void CreateReservation_WithStringReservationStateAndValidParameters_ShouldCreate()
         {
             //ARRANGE
-            var newReservationState = new ReservationState("New");
+            var newReservationStateValue = "New";
+            var newReservationState = new ReservationState(newReservationStateValue);
+            //ACT
+            var reservation = new Reservation(user, parkingResource, resourceQuantity, location, todayDateTime, tomorrowDateTime);
+
+            //ASSERT
+            reservation.Id.Should().NotBeEmpty();
+            reservation.User.Should().NotBeNull();
+            reservation.Resource.Should().NotBeNull();
+            reservation.ResourceQuantity.Should().Be(resourceQuantity);
+            reservation.Location.Should().NotBeNull();
+            reservation.CreatedAt.Should().BeBefore(DateTime.UtcNow);
+            reservation.State.Should().Equals(newReservationState);
+            reservation.BeginDate.HasValue.Should().BeTrue();
+            reservation.EndDate.Should().BeAfter(reservation.BeginDate.Value);
+            reservation.EndDate.HasValue.Should().BeTrue();
+            reservation.UpdatedAt.HasValue.Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void CreateReservation_WithRecordReservationStateAndValidParameters_ShouldCreate()
+        {
+            //ARRANGE
+            var newReservationStateValue = "New";
+            var reservationStateName = new Name(newReservationStateValue);
+            var newReservationState = new ReservationState(reservationStateName);
             //ACT
             var reservation = new Reservation(user, parkingResource, resourceQuantity, location, todayDateTime, tomorrowDateTime);
 

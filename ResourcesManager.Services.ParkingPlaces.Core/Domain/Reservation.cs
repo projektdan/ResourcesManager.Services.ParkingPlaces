@@ -1,10 +1,11 @@
-﻿using ResourcesManager.Services.ParkingPlaces.Core.Exceptions;
+﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain.Constants;
+using ResourcesManager.Services.ParkingPlaces.Core.Exceptions;
 using System;
 using System.Linq;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
-    public class Reservation : DatabaseEntityBase
+    public class Reservation : DbEntityBase
     {
         public Guid Id { get; private set; }
         public User User { get; private set; }
@@ -30,7 +31,10 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             SetResource(resource);
             SetQuantity(resourceQuantity);
             SetLocation(location);
-            SetState(new ReservationState("New"));
+            SetState(new ReservationState
+                (
+                    DomainConstants.NewReservationStateValue
+                ));
             SetBeginDate(beginDate);
             SetEndDate(endDate);
         } 

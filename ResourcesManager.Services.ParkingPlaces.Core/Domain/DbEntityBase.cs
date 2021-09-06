@@ -2,7 +2,7 @@
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
-    public abstract class DatabaseEntityBase
+    public abstract class DbEntityBase
     {
         public DateTime? UpdatedAt { get; protected set; }
 

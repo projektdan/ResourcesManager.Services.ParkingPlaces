@@ -4,7 +4,7 @@ using System;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
-    public class Resource : DatabaseEntityBase
+    public class Resource : DbEntityBase
     {
         public Guid Id { get; private set; }
         public UniqueResourceIdentifier UniqueResourceIdentifier { get; private set; }

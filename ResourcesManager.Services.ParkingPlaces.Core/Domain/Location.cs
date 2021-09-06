@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
-    public class Location : DatabaseEntityBase
+    public class Location : DbEntityBase
     {
         public Guid Id { get; private set; }
         public Name Name { get; private set; }

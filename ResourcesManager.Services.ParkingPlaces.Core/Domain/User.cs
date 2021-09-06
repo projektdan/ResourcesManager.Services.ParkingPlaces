@@ -7,7 +7,7 @@ using PasswordVerificationResult = Microsoft.AspNetCore.Identity.PasswordVerific
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 {
-    public class User : DatabaseEntityBase
+    public class User : DbEntityBase
     {
         public Guid Id { get; private set; }
         public Username Username { get; private set; }
