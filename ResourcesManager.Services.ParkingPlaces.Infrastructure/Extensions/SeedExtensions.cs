@@ -8,9 +8,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Extensions
     {
         public static ReservationState AsReservationState(this SeedOptions.ReservationStateSeed reservationStateSeed)
         {
-            //TODO : Create valueobject
-            var tempName = reservationStateSeed.name;
-            var reservationState = new ReservationState(tempName);
+            var name = new Name(reservationStateSeed.name);
+            var reservationState = new ReservationState(name);
 
             return reservationState;
         }
