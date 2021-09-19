@@ -3,6 +3,7 @@ using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 using ResourcesManager.Services.ParkingPlaces.Core.Repositories;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
@@ -26,6 +27,11 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
         }
 
         public Task DeleteResourceAsync(Resource resource)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Location>> GetAllAsync()
         {
             throw new NotImplementedException();
         }

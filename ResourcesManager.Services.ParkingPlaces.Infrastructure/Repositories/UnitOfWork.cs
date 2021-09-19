@@ -50,6 +50,16 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
             }
         }
 
+        private IReservationStateRepository reservationStates;
+        public IReservationStateRepository ReservationStates
+        {
+            get
+            {
+                reservationStates ??= new ReservationStateRepository(context);
+                return reservationStates;
+            }
+        }
+
         public UnitOfWork(AppDbContext context)
         {
             this.context = context;

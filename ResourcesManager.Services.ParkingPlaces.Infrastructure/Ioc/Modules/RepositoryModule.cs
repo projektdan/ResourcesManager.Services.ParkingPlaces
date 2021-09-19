@@ -17,6 +17,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Ioc.Modules
             services.AddTransient<ILocationRepository, LocationRepository>();
             services.AddTransient<IReservationRepository, ReservationRepository>();
             services.AddTransient<IResourceRepository, ResourceRepository>();
+            services.AddTransient<IReservationStateRepository, ReservationStateRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }

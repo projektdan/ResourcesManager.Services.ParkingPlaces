@@ -10,6 +10,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories.In
         IReservationRepository Reservations { get; }
         IResourceRepository Resources { get; }
         IUserRepository Users { get; }
+        IReservationStateRepository ReservationStates { get; }
         Task CompleteAsync();
     }
 }

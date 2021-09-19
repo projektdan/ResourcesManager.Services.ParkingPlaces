@@ -1,5 +1,6 @@
 ﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Repositories
@@ -8,7 +9,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Repositories
     {
         Task AddAsync(Reservation reservation);
         Task<Reservation> GetAsync(Guid id);
-        Task<Reservation> GetByUserAsync(User user);
+        Task<Reservation> GetAsync(User user);
+        Task<IEnumerable<Reservation>> GetAllAsync();
         Task DeleteAsync(Reservation reservation);
         Task UpdateStateAsync(Reservation reservation);
     }

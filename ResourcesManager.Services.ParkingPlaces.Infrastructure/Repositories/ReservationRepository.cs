@@ -2,6 +2,7 @@
 using ResourcesManager.Services.ParkingPlaces.Core.Repositories;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
@@ -24,7 +25,17 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<IEnumerable<Reservation>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<Reservation> GetAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Reservation> GetAsync(User user)
         {
             throw new NotImplementedException();
         }

@@ -1,12 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Services;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Ioc.Modules
 {
@@ -16,6 +12,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Ioc.Modules
         {
             services.AddTransient<ISeeder, Seeder>();
             services.AddTransient<IUnitOfWorkFactory, UnitOfWorkFactory>();
+
+            //services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         }
     }
 }

@@ -38,9 +38,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Api
 
             services.AddControllers();
             services.AddDbContext<AppDbContext>();
-            services.RegisterExternalModules();
             services.RegisterOptions<DatabaseOptions>("database");
             services.RegisterOptions<SeedOptions>("seed");
+            services.RegisterExternalModules();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
