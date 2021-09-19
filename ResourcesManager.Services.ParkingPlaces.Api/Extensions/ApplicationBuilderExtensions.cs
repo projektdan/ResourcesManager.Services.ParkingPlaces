@@ -12,7 +12,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Extensions
         public static void ApplyMigration<TContext>(this IApplicationBuilder app)
             where TContext : DbContext
         {
-            var context = app.ApplicationServices.GetService<TContext>();
+            var scope = app.ApplicationServices.CreateScope();
+            var context = scope.ServiceProvider.GetService<TContext>();
             if (context.Database.GetPendingMigrations().Any())
             {
                 Console.WriteLine($"Migrating {typeof(TContext).Name}...");

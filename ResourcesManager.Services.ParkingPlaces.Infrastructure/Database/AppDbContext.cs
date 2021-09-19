@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ResourcesManager.Services.Libraries.Options;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain;
-using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database.EntityConfigurations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Database
 {
@@ -41,7 +35,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Database
             modelBuilder.HasDefaultSchema(this.databaseOptions.Schema);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
             modelBuilder.HasPostgresExtension("uuid-ossp");
-
         }
     }
 }

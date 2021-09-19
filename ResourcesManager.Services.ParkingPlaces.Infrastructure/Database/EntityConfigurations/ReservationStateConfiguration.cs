@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Database.EntityConfigurations
 {
@@ -18,8 +14,11 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Database.Entity
 
             builder.Property(e => e.Id)
                 .HasDefaultValueSql("uuid_generate_v1()");
+            builder.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("now() at time zone 'utc'").IsRequired();
             builder.Property(e => e.Name)
-                .IsRequired();
+                .HasConversion(c => c.Value, c => new Name(c))
+                .HasMaxLength(Name.MaxLength).IsRequired();
         }
     }
 }
