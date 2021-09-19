@@ -36,7 +36,7 @@
 	* EndDate
 	
 ### **ReservationState**
-	* (enum: New, Completed, Cancelled)
+	* Name (New, Completed, Cancelled)
 
 ## **Technologies:**
 	* .NET5,
