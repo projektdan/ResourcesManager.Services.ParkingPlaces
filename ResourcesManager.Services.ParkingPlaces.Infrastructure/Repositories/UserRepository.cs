@@ -1,4 +1,5 @@
-﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 using ResourcesManager.Services.ParkingPlaces.Core.Repositories;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
@@ -15,29 +16,25 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
         {
             this.context = context;
         }
-        public Task AddAsync(User user)
+        public async Task AddAsync(User user)
+            => await context.Users.AddAsync(user);
+
+        public async Task DeleteAsync(User user)
         {
-            throw new NotImplementedException();
+            this.context.Users.Remove(user);
+            await Task.CompletedTask;
         }
 
-        public Task DeleteAsync(User user)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<User> GetAsync(Guid id)
+            => await this.context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-        public Task<User> GetAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<User> GetAsync(Username username)
+            => await this.context.Users.FirstOrDefaultAsync(x => x.Username == username);
 
-        public Task<User> GetAsync(Username username)
+        public async Task UpdateAsync(User user)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(User user)
-        {
-            throw new NotImplementedException();
+            this.context.Users.Update(user);
+            await Task.CompletedTask;
         }
     }
 }

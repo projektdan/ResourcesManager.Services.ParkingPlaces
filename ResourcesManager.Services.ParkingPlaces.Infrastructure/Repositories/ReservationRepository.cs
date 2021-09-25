@@ -1,4 +1,5 @@
-﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Core.Repositories;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
 using System;
@@ -15,39 +16,29 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
         {
             this.context = context;
         }
-        public Task AddAsync(Reservation reservation)
+        public async Task AddAsync(Reservation reservation)
+            => await this.context.Reservations.AddAsync(reservation);
+
+        public async Task DeleteAsync(Reservation reservation)
         {
-            throw new NotImplementedException();
+            this.context.Reservations.Remove(reservation);
+            await Task.CompletedTask;
         }
 
-        public Task DeleteAsync(Reservation reservation)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<Reservation>> GetAllAsync()
+            => await this.context.Reservations.ToListAsync();
 
-        public Task<IEnumerable<Reservation>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Reservation> GetAsync(Guid id)
+            => await this.context.Reservations.FirstOrDefaultAsync(x => x.Id == id);
 
-        public Task<Reservation> GetAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Reservation> GetAsync(User user)
+            => await this.context.Reservations.FirstOrDefaultAsync(x => x.User == user);
 
-        public Task<Reservation> GetAsync(User user)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<Reservation> GetByUserAsync(User user)
+        public async Task UpdateStateAsync(Reservation reservation)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateStateAsync(Reservation reservation)
-        {
-            throw new NotImplementedException();
+            this.context.Reservations.Update(reservation);
+            await Task.CompletedTask;
         }
     }
 }

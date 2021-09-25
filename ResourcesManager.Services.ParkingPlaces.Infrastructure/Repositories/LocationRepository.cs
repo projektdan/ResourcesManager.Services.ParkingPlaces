@@ -16,15 +16,11 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
         {
             this.context = context;
         }
-        public Task AddAsync(Location location)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task AddAsync(Location location)
+            => await this.context.Locations.AddAsync(location);
 
-        public Task AddResourceAsync(Resource resource)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task AddResourceAsync(Resource resource)
+            => await this.context.Locations.AddAsync(resource);
 
         public Task DeleteResourceAsync(Resource resource)
         {

@@ -1,4 +1,5 @@
-﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 using ResourcesManager.Services.ParkingPlaces.Core.Repositories;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
@@ -15,24 +16,19 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
         {
             this.context = context;
         }
-        public Task AddAsync(Resource resource)
+        public async Task AddAsync(Resource resource)
+            => await this.context.Resources.AddAsync(resource);
+
+        public async Task DeleteAsync(Resource resource)
         {
-            throw new NotImplementedException();
+            this.context.Resources.Remove(resource);
+            await Task.CompletedTask;
         }
 
-        public Task DeleteAsync(Resource resource)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Resource> GetAsync(Guid id)
+            => await this.context.Resources.FirstOrDefaultAsync(x => x.Id == id);
 
-        public Task<Resource> GetAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Resource> GetAsync(UniqueResourceIdentifier uniqueResourceIdentifier)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Resource> GetAsync(UniqueResourceIdentifier uniqueResourceIdentifier)
+            => await this.context.Resources.FirstOrDefaultAsync(x => x.UniqueResourceIdentifier == uniqueResourceIdentifier);
     }
 }
