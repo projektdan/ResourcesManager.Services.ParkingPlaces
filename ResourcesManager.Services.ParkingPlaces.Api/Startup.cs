@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ResourcesManager.Services.Libraries.Options;
+using ResourcesManager.Services.Libraries.Swagger;
 using ResourcesManager.Services.ParkingPlaces.Api.Extensions;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Extensions;
@@ -41,6 +42,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Api
             services.RegisterOptions<DatabaseOptions>("database");
             services.RegisterOptions<SeedOptions>("seed");
             services.RegisterExternalModules();
+            services.AddSwaggerDocs();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +52,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwaggerDocs();
 
             app.UseRouting();
 
