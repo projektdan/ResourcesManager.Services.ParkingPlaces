@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Net;
 
 namespace ResourcesManager.Services.Libraries.Exceptions
 {
     public class CustomException : ExceptionBase
     {
+        public HttpStatusCode HttpStatusCode { get; set; }
+
         public CustomException()
         {
         }
@@ -22,6 +25,12 @@ namespace ResourcesManager.Services.Libraries.Exceptions
 
         public CustomException(Exception innerException, string code, string message, params object[] args) : base(innerException, code, string.Format(message, args))
         {
+        }
+
+        public CustomException WithCode(HttpStatusCode code)
+        {
+            this.HttpStatusCode = code;
+            return this;
         }
     }
 }

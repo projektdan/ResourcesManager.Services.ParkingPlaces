@@ -17,6 +17,9 @@ namespace ResourcesManager.Services.Libraries.FluentValidation
         public FluentValidator<TEntity> WhenIsNull()
             => this.When(x => x is null);
 
+        public FluentValidator<TEntity> WhenIsNotNull()
+            => this.When(x => x is not null);
+
         public void Validate() => base.ValidateEntity();
     }
 }

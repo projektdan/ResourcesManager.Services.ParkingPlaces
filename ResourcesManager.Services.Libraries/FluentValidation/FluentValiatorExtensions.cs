@@ -18,5 +18,8 @@ namespace ResourcesManager.Services.Libraries.FluentValidation
 
         public static FluentValidator<string> WhenIsNotMatchRegex(this FluentValidator<string> validator, Regex regex)
             => validator.When(x => !regex.IsMatch(x));
+
+        public static FluentValidator<int> WhenLessThan(this FluentValidator<int> validator, int minValue)
+            => validator.When(x => x < minValue);
     }
 }
