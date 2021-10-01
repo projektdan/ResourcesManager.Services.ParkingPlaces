@@ -27,5 +27,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Exceptions
         public static string EmptyAddress;
         public static string EmptyUniqueResourceIdentifier;
         public static string InvalidIntvalue;
+        public static string ResourceNotFound;
+        public static string ResourceAlreadyExists;
+        public static string ResourceIsInUse;
     }
 }

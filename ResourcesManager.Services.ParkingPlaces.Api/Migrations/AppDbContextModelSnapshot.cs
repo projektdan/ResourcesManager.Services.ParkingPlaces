@@ -43,15 +43,45 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Migrations
                         .HasMaxLength(26)
                         .HasColumnType("character varying(26)");
 
-                    b.Property<string>("Resources")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
+                });
+
+            modelBuilder.Entity("ResourcesManager.Services.ParkingPlaces.Core.Domain.LocationResource", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("uuid_generate_v1()");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp without time zone")
+                        .HasDefaultValueSql("now() at time zone 'utc'");
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ResourceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("ResourceQuantity")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("LocationId", "ResourceId");
+
+                    b.HasIndex("ResourceId");
+
+                    b.ToTable("LocationResources");
                 });
 
             modelBuilder.Entity("ResourcesManager.Services.ParkingPlaces.Core.Domain.Reservation", b =>
@@ -212,6 +242,25 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ResourcesManager.Services.ParkingPlaces.Core.Domain.LocationResource", b =>
+                {
+                    b.HasOne("ResourcesManager.Services.ParkingPlaces.Core.Domain.Location", "Location")
+                        .WithMany("Resources")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ResourcesManager.Services.ParkingPlaces.Core.Domain.Resource", "Resource")
+                        .WithMany()
+                        .HasForeignKey("ResourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Resource");
+                });
+
             modelBuilder.Entity("ResourcesManager.Services.ParkingPlaces.Core.Domain.Reservation", b =>
                 {
                     b.HasOne("ResourcesManager.Services.ParkingPlaces.Core.Domain.Location", "Location")
@@ -245,6 +294,11 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Migrations
                     b.Navigation("State");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ResourcesManager.Services.ParkingPlaces.Core.Domain.Location", b =>
+                {
+                    b.Navigation("Resources");
                 });
 #pragma warning restore 612, 618
         }

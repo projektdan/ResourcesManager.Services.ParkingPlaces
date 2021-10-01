@@ -1,4 +1,5 @@
-﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
+﻿using ResourcesManager.Services.Libraries.Exceptions;
+using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 using ResourcesManager.Services.ParkingPlaces.Core.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,12 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         public Guid Id { get; private set; }
         public Name Name { get; private set; }
         public Address Address { get; private set; }
-        private IDictionary<Resource, int> resources = new Dictionary<Resource, int>();
-        public IDictionary<Resource, int> Resources
+        private ISet<LocationResource> resources = new HashSet<LocationResource>();
+        public IEnumerable<LocationResource> Resources
         {
-            get => this.resources;
-            private set => this.resources = value;
+            get => resources;
+            private set => resources = value?.ToHashSet();
         }
-
-        public DateTime CreatedAt { get; private set; }
 
         #region CTOR
         private Location()
@@ -64,45 +63,50 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             this.Name = name;
         }
 
-        public void AddResource(Resource resource, int quantity)
+        public LocationResource AddOrUpdateResource(Resource resource, ResourceQuantity quantity)
         {
             if (resource is null)
             {
                 throw new NullEntityException<Resource>();
             }
-            if (quantity <= 0)
+            if (quantity.Value <= 0)
             {
-                throw new InvalidIntValueException(nameof(quantity));
+                throw new InvalidQuantityValueException(nameof(quantity));
             }
 
-            var resourceInDictionary = this.resources.Any(x => x.Key == resource);
-            if (resourceInDictionary)
+            var locationResource = new LocationResource(this, resource, quantity);
+
+            var isResourceExist = resources.Any(x => x.Resource == resource);
+            if (isResourceExist)
             {
-                this.resources[resource] = this.resources[resource] + quantity;
-            }
-            else if(!resourceInDictionary)
-            {
-                this.resources.Add(resource, quantity);
+                var resourceToRemove = resources.FirstOrDefault(x => x.Resource == resource);
+                resources.Remove(resourceToRemove);
             }
 
+            resources.Add(locationResource);
             Update();
+
+            return locationResource;
         }
 
-        public void RemoveResource(Resource resource)
+        public LocationResource RemoveResource(Resource resource)
         {
             if (resource is null)
             {
                 throw new NullEntityException<Resource>();
             }
 
-            var resourceInDictionary = this.resources.FirstOrDefault(x => x.Key == resource);
-
-            if (resourceInDictionary.Key is not null)
+            var resourceToRemove = resources.FirstOrDefault(x => x.Resource == resource);
+            var isResourceExist = resources.Any(x => x.Resource == resource);
+            if (!isResourceExist)
             {
-                this.resources.Remove(resource);
+                throw new CustomException(ErrorCodes.ResourceNotFound, $"Cannot remove resource '{resource.Name.Value}', because doesn't exist in Location: {this.Name.Value}");
             }
 
+            resources.Remove(resourceToRemove);
             Update();
+
+            return resourceToRemove;
         }
     }
 }

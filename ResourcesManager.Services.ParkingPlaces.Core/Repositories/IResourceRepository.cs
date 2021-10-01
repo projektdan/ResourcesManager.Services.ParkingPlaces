@@ -10,6 +10,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Repositories
         Task AddAsync(Resource resource);
         Task<Resource> GetAsync(Guid id);
         Task<Resource> GetAsync(UniqueResourceIdentifier uniqueResourceIdentifier);
-        Task DeleteAsync(Resource resource);
+        Task RemoveAsync(Resource resource);
     }
 }

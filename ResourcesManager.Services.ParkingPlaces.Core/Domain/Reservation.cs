@@ -15,7 +15,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         public ReservationState State { get; private set; }
         public DateTime? BeginDate { get; private set; }
         public DateTime? EndDate { get; private set; }
-        public DateTime CreatedAt { get; private set; }
 
         #region CTOR
         private Reservation()
@@ -74,7 +73,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         {
             if (resourceQuantity <= 0)
             {
-                throw new InvalidIntValueException(nameof(resourceQuantity));
+                throw new InvalidQuantityValueException(nameof(resourceQuantity));
             }
 
             if (this.ResourceQuantity != resourceQuantity && this.ResourceQuantity > 0)

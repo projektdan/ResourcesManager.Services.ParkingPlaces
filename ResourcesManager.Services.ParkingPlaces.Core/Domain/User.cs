@@ -16,7 +16,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         public Firstname Firstname { get; private set; }
         public Lastname Lastname { get; private set; }
         public Email Email { get; private set; }
-        public DateTime CreatedAt { get; private set; }
 
         #region CTOR
         private User()

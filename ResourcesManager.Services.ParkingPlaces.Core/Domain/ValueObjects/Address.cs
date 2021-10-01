@@ -22,7 +22,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects
                     .WhenLengthIsNotBetween(MinLength, MaxLength)
                 .Validate();
 
-            this.Value = value;
+            Value = value;
         }
     }
 }

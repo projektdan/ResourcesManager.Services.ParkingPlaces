@@ -65,9 +65,10 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
             //ARRANGE
             var location = new Location(name, address);
             var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
-            
+            var resourceQuantity = new ResourceQuantity(2);
+
             //ACT
-            location.AddResource(parkingResource, 1);
+            location.AddOrUpdateResource(parkingResource, resourceQuantity);
 
             //ASSERT
             location.Resources.Count().Should().BeGreaterThan(0);
@@ -80,17 +81,18 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
             //ARRANGE
             var location = new Location(name, address);
             var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
+            var resourceQuantity = new ResourceQuantity(2);
 
             //ACT
-            location.AddResource(parkingResource, 1);
-            location.AddResource(parkingResource, 1);
+            location.AddOrUpdateResource(parkingResource, resourceQuantity);
+            location.AddOrUpdateResource(parkingResource, resourceQuantity);
 
             //ASSERT
             var expectedResourcesCount = 1;
             location.Resources.Count().Should().Be(expectedResourcesCount);
 
             var expectedResourceQuantity = 2;
-            location.Resources.Where(x => x.Key == parkingResource).FirstOrDefault().Value.Should().Be(expectedResourceQuantity);
+            location.Resources.Where(x => x.Resource == parkingResource).FirstOrDefault().ResourceQuantity.Value.Should().Be(expectedResourceQuantity);
         }
 
         [TestMethod]
@@ -99,21 +101,22 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
             //ARRANGE
             var location = new Location(name, address);
             var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
+            var resourceQuantity = new ResourceQuantity(1);
 
             var newUniqueResourceIdentifier = new UniqueResourceIdentifier("nobel_tower_parking_place");
             var newResourceName = new Name("Parking Place");
             var newParkingResource = new Resource(newUniqueResourceIdentifier, newResourceName);
 
             //ACT
-            location.AddResource(parkingResource, 1);
-            location.AddResource(newParkingResource, 1);
+            location.AddOrUpdateResource(parkingResource, resourceQuantity);
+            location.AddOrUpdateResource(newParkingResource, resourceQuantity);
 
             //ASSERT
             var expectedResourcesCount = 2;
             location.Resources.Count().Should().Be(expectedResourcesCount);
 
             var expectedResourceQuantity = 1;
-            location.Resources.Where(x => x.Key == parkingResource).FirstOrDefault().Value.Should().Be(expectedResourceQuantity);
+            location.Resources.Where(x => x.Resource == parkingResource).FirstOrDefault().ResourceQuantity.Value.Should().Be(expectedResourceQuantity);
         }
 
         [TestMethod]
@@ -122,9 +125,10 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
             //ARRANGE
             var location = new Location(name, address);
             var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
+            var resourceQuantity = new ResourceQuantity(2);
 
             //ACT
-            location.AddResource(parkingResource, 1);
+            location.AddOrUpdateResource(parkingResource, resourceQuantity);
             location.RemoveResource(parkingResource);
 
             //ASSERT
@@ -135,15 +139,16 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
         [TestMethod]
         [DataRow(0)]
         [DataRow(-1)]
-        [ExpectedException(typeof(InvalidIntValueException))]
+        [ExpectedException(typeof(InvalidQuantityValueException))]
         public void AddResource_CreateLocationAndResourceWithIncorrectQuantity_ShouldFailed(int incorrectQuantity)
         {
             //ARRANGE
             var location = new Location(name, address);
             var parkingResource = new Resource(uniqueResourceIdentifier, resourceName);
+            var resourceQuantity = new ResourceQuantity(incorrectQuantity);
 
             //ACT
-            location.AddResource(parkingResource, incorrectQuantity);
+            location.AddOrUpdateResource(parkingResource, resourceQuantity);
 
             //ASSERT
             Assert.IsNull(location.Resources);
@@ -156,9 +161,10 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Tests.Domain
             //ARRANGE
             var location = new Location(name, address);
             Resource parkingResource = null;
+            var resourceQuantity = new ResourceQuantity(2);
 
             //ACT
-            location.AddResource(parkingResource, 1);
+            location.AddOrUpdateResource(parkingResource, resourceQuantity);
 
             //ASSERT
             Assert.IsNull(location.Resources);

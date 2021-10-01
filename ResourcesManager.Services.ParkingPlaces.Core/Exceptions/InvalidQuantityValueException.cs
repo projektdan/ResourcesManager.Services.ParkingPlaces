@@ -2,9 +2,9 @@
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Exceptions
 {
-    public class InvalidIntValueException : CustomException
+    public class InvalidQuantityValueException : CustomException
     {
-        public InvalidIntValueException(string propertyName)
+        public InvalidQuantityValueException(string propertyName)
             : base(ErrorCodes.InvalidIntvalue, $"{propertyName} must be greater than 0.")
         {
         }

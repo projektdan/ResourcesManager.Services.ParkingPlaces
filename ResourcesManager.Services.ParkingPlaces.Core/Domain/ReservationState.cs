@@ -8,7 +8,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
     {
         public Guid Id { get; private set; }
         public Name Name { get; private set; }
-        public DateTime CreatedAt { get; private set; }
 
         #region CTOR
         private ReservationState()
