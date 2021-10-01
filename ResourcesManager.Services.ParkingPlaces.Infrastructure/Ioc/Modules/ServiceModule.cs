@@ -12,6 +12,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Ioc.Modules
         {
             services.AddTransient<ISeeder, Seeder>();
             services.AddTransient<IUnitOfWorkFactory, UnitOfWorkFactory>();
+            services.AddTransient<IResourceService, ResourceService>();
+            services.AddTransient<ILocationService, LocationService>();
 
             //services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         }

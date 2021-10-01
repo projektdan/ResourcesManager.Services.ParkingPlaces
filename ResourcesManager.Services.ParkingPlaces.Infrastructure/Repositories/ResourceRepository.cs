@@ -19,7 +19,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
         public async Task AddAsync(Resource resource)
             => await this.context.Resources.AddAsync(resource);
 
-        public async Task DeleteAsync(Resource resource)
+        public async Task RemoveAsync(Resource resource)
         {
             this.context.Resources.Remove(resource);
             await Task.CompletedTask;

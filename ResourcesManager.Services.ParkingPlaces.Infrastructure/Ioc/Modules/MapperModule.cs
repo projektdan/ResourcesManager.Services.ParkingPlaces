@@ -1,9 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
+using ResourcesManager.Services.ParkingPlaces.Infrastructure.Mapper;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Ioc.Modules
 {
@@ -11,7 +8,13 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Ioc.Modules
     {
         public void Load(IServiceCollection services)
         {
-            
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new MapperProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
     }
 }

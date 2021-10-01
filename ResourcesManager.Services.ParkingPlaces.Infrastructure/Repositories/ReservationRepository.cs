@@ -34,7 +34,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
         public async Task<Reservation> GetAsync(User user)
             => await this.context.Reservations.FirstOrDefaultAsync(x => x.User == user);
 
-
         public async Task UpdateStateAsync(Reservation reservation)
         {
             this.context.Reservations.Update(reservation);

@@ -32,7 +32,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
                     {
                         var reservationState = reservationStateSeed.AsReservationState();
                         await uow.ReservationStates.AddAsync(reservationState);
-                        await uow.CompleteAsync();
+                        await uow.SaveAsync();
                     }
                     catch (Exception ex)
                     {

@@ -1,9 +1,11 @@
-﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain;
+﻿using Microsoft.EntityFrameworkCore;
+using ResourcesManager.Services.ParkingPlaces.Core.Domain;
 using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 using ResourcesManager.Services.ParkingPlaces.Core.Repositories;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
@@ -19,32 +21,22 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
         public async Task AddAsync(Location location)
             => await this.context.Locations.AddAsync(location);
 
-        public async Task AddResourceAsync(Resource resource)
-            => await this.context.Locations.AddAsync(resource);
+        public async Task<IEnumerable<Location>> GetAllAsync()
+            => await this.context.Locations.ToListAsync();
 
-        public Task DeleteResourceAsync(Resource resource)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Location> GetAsync(Guid id)
+            => await this.context.Locations.FirstOrDefaultAsync(x => x.Id == id);
 
-        public Task<IEnumerable<Location>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Location> GetAsync(Name name)
+            => await this.context.Locations.FirstOrDefaultAsync(x => x.Name == name);
 
-        public Task<Location> GetAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Location> GetFirstOrDefaultByResource(Resource resource)
+            => await context.Locations.FirstOrDefaultAsync(x => x.Resources.OrderByDescending(r => r.CreatedAt).First().Resource == resource);
 
-        public Task<Location> GetAsync(Name name)
+        public async Task RemoveAsync(Location location)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task RemoveAsync(Location location)
-        {
-            throw new NotImplementedException();
+            this.context.Locations.Remove(location);
+            await Task.CompletedTask;
         }
     }
 }

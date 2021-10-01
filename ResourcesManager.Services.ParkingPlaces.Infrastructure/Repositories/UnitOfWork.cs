@@ -65,7 +65,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
             this.context = context;
         }
 
-        public async Task CompleteAsync()
+        public async Task SaveAsync()
             => await this.context.SaveChangesAsync();
 
         private bool disposed = false;
