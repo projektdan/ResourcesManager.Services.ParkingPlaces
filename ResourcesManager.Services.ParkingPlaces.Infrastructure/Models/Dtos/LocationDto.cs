@@ -6,6 +6,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Models.Dtos
     {
         public string Name { get; set; }
         public string Address { get; set; }
-        public Dictionary<ResourceDto, int> Resources { get; set; }
+        public IEnumerable<LocationResourceDto> Resources { get; set; }
     }
 }

@@ -30,5 +30,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Exceptions
         public static string ResourceNotFound;
         public static string ResourceAlreadyExists;
         public static string ResourceIsInUse;
+        public static string LackOfResources;
+        public static string LocationAlreadyExists;
     }
 }

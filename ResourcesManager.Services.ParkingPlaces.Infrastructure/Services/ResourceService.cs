@@ -7,6 +7,8 @@ using ResourcesManager.Services.ParkingPlaces.Infrastructure.Models.Dtos;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Models.Payloads;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories.Interfaces;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Services.Interfaces;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -30,7 +32,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
 
             var resource = await this.unitOfWork.Resources.GetAsync(uniqueResourceIdentifier);
             resource.GetValidator()
-                .Throw(new CustomException(ErrorCodes.ResourceAlreadyExists, $"Device with identifier '{payload.UniqueResourceIdentifier}' already exists."))
+                .Throw(new CustomException(ErrorCodes.ResourceAlreadyExists, $"Resource with identifier '{payload.UniqueResourceIdentifier}' already exists."))
                 .WhenIsNotNull()
             .Validate();
 
@@ -57,6 +59,20 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
             return deviceDto;
         }
 
+        public async Task<IEnumerable<ResourceDto>> GetAllResourcesAsync()
+        {
+            var resources = await unitOfWork.Resources.GetAllAsync();
+
+            resources.GetValidator()
+                .Throw(new CustomException(ErrorCodes.LackOfResources, $"Any resources exist.").WithCode(HttpStatusCode.NotFound))
+                .WhenIsNull()
+            .Validate();
+
+            var resourcesDto = mapper.Map<IEnumerable<ResourceDto>>(resources);
+
+            return resourcesDto;
+        }
+
         public async Task RemoveResourceAsync(string uniqueResourceIdentifierString)
         {
             var uniqueResourceIdentifier = new UniqueResourceIdentifier(uniqueResourceIdentifierString);
@@ -76,6 +92,16 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
 
             await unitOfWork.Resources.RemoveAsync(resource);
             await unitOfWork.SaveAsync();
+        }
+
+        public Task RegisterResourceInLocationAsync(Guid resourceId, string locationName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UnregisterResourceFromLocationAsync(Guid resourceId, string locationName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

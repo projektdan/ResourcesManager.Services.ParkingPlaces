@@ -18,7 +18,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             get => resources;
             private set => resources = value?.ToHashSet();
         }
-
+        //TODO : Add Location unique identifier
         #region CTOR
         private Location()
         {

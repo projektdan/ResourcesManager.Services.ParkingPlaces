@@ -9,10 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Cqrs\Handlers\Locations\" />
     <Folder Include="Cqrs\Handlers\Users\" />
     <Folder Include="Cqrs\Handlers\Reservations\" />
-    <Folder Include="Cqrs\Requests\Locations\" />
     <Folder Include="Cqrs\Requests\Users\" />
     <Folder Include="Cqrs\Requests\Reservations\" />
     <Folder Include="Exceptions\" />

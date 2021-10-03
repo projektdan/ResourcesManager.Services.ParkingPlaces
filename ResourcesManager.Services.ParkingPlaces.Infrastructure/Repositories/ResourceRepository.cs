@@ -4,6 +4,7 @@ using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
 using ResourcesManager.Services.ParkingPlaces.Core.Repositories;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Database;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
@@ -30,5 +31,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
 
         public async Task<Resource> GetAsync(UniqueResourceIdentifier uniqueResourceIdentifier)
             => await this.context.Resources.FirstOrDefaultAsync(x => x.UniqueResourceIdentifier == uniqueResourceIdentifier);
+
+        public async Task<IEnumerable<Resource>> GetAllAsync()
+            => await context.Resources.ToListAsync();
     }
 }
