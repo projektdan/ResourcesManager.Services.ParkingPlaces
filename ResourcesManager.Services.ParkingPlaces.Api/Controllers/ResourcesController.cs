@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Cqrs.Requests.Resources;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Models.Dtos;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Models.Payloads;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Api.Controllers
@@ -19,13 +20,16 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get resource
         /// </summary>
         /// <param name="unique_resource_identifier"></param>
         /// <returns></returns>
         /// <response code="200">Returns resource</response>
+        /// <response code="204">Returns no content</response>
+        /// <response code="400">Returns json object which contains error code and message</response>
+        /// /// <response code="404">Returns when resource was not found</response>
         [HttpGet("{unique_resource_identifier}")]
-        public async Task<ActionResult<ResourceDto>> Get([FromRoute]string unique_resource_identifier)
+        public async Task<ActionResult<ResourceDto>> Get([FromRoute] string unique_resource_identifier)
         {
             var request = new GetResourceRequest(unique_resource_identifier);
             var result = await this.mediator.Send(request);
@@ -34,24 +38,47 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get all resources
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Returns resource</response>
+        /// <response code="204">Returns no content</response>
+        /// <response code="400">Returns json object which contains error code and message</response>
+        /// <response code="404">Returns when resource was not found</response>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ResourceDto>>> GetAll()
+        {
+            var request = new GetAllResourcesRequest();
+            var result = await mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Add resource
         /// </summary>
         /// <param name="payload"></param>
         /// <returns></returns>
+        /// <response code="201">Returns newly created resource</response>
+        /// <response code="400">Returns json object which contains error code and message</response>
+        /// <response code="404">Returns when resource was not found</response>
         [HttpPost]
         public async Task<ActionResult<ResourceDto>> Add([FromBody]AddResourcePayload payload)
         {
             var request = new AddResourceRequest(payload);
             var result = await this.mediator.Send(request);
 
-            return Created($"resources/{result.Name}", result);
+            return Created($"resources/{result.UniqueResourceIdentifier}", result);
         }
 
         /// <summary>
-        /// 
+        /// Delete a resource
         /// </summary>
         /// <param name="unique_resource_identifier"></param>
         /// <returns></returns>
+        /// <response code="204">Returns no content</response>
+        /// <response code="400">Returns json object which contains error code and message</response>
+        /// <response code="404">Returns when resource was not found</response>
         [HttpDelete("{unique_resource_identifier}")]
         public async Task<IActionResult> Delete([FromRoute]string unique_resource_identifier)
         {
