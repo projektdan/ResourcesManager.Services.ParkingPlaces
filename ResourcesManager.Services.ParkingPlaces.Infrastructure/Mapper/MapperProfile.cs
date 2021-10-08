@@ -26,6 +26,10 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Mapper
                 .ForMember(dst => dst.Name, x => x.MapFrom(src => src.Name.Value))
                 .ForMember(dst => dst.Address, x => x.MapFrom(src => src.Address.Value))
                 .ForMember(dst => dst.Resources, x => x.MapFrom(src => src.Resources));
+            CreateMap<LocationResource, LocationResourceDto>()
+                .ForMember(dst => dst.Location, x => x.MapFrom(src => src.Location))
+                .ForMember(dst => dst.Resource, x => x.MapFrom(src => src.Resource))
+                .ForMember(dst => dst.ResourceQuantity, x => x.MapFrom(src => src.ResourceQuantity.Value));
         }
     }
 }

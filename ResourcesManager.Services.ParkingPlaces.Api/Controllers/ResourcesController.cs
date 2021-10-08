@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Cqrs.Requests.Resources;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Models.Dtos;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Models.Payloads;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -84,6 +85,16 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Controllers
         {
             var request = new RemoveResourceRequest(unique_resource_identifier);
             await this.mediator.Send(request);
+
+            return NoContent();
+        }
+
+        [HttpPatch("{location_name}/resources/{uniqe_resource_identifier}/{resource_quantity}/register")]
+        public async Task<IActionResult> RegisterResourceInLocation([FromRoute]string location_name, 
+            [FromRoute]string uniqe_resource_identifier, [FromRoute]int resource_quantity)
+        {
+            var request = new RegisterResourceInLocationRequest(uniqe_resource_identifier, resource_quantity, location_name);
+            await mediator.Send(request);
 
             return NoContent();
         }

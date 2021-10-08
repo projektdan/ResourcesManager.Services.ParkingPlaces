@@ -7,6 +7,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories.In
     public interface IUnitOfWork : IDisposable, IRepository
     {
         ILocationRepository Locations { get; }
+        ILocationResourceRepository LocationResources { get;  }
         IReservationRepository Reservations { get; }
         IResourceRepository Resources { get; }
         IUserRepository Users { get; }

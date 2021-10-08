@@ -20,6 +20,18 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
             }
         }
 
+        private ILocationResourceRepository locationResources;
+
+        public ILocationResourceRepository LocationResources
+        {
+            get
+            {
+                locationResources ??= new LocationResourceRepository(context);
+                return locationResources;
+            }
+        }
+
+
         private IReservationRepository reservations;
         public IReservationRepository Reservations
         {

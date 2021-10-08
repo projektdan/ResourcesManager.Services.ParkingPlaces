@@ -9,6 +9,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Database
         private readonly DatabaseOptions databaseOptions;
 
         internal DbSet<Location> Locations { get; set; }
+        internal DbSet<LocationResource> LocationResources { get; set; }
         internal DbSet<Reservation> Reservations { get; set; }
         internal DbSet<Resource> Resources { get; set; }
         internal DbSet<User> Users { get; set; }
