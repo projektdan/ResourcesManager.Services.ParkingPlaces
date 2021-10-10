@@ -13,6 +13,6 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services.Interf
         Task RemoveResourceAsync(string uniqueResourceIdentifier);
         Task RegisterResourceInLocationAsync(string uniqueResourceIdentifier, int resourceQuantity, string locationNameString);
         Task UnregisterResourceFromLocationAsync(string uniqueResourceIdentifier, string locationNameString);
-        Task UpdateQuantityResourceInLocation(string uniqueResourceIdentifier, int resourceQuantity, string locationName);
+        Task UpdateResourceInLocation(string uniqueResourceIdentifier, int resourceQuantity, string locationName);
     }
 }

@@ -19,23 +19,25 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories
             this.context = context;
         }
         public async Task AddAsync(Location location)
-            => await this.context.Locations.AddAsync(location);
+            => await context.Locations.AddAsync(location);
 
         public async Task<IEnumerable<Location>> GetAllAsync()
-            => await this.context.Locations.ToListAsync();
+            => await context.Locations.Include(x => x.Resources).ThenInclude(x => x.Resource).ToListAsync();
 
         public async Task<Location> GetAsync(Guid id)
-            => await this.context.Locations.FirstOrDefaultAsync(x => x.Id == id);
+            => await context.Locations.Include(x => x.Resources).ThenInclude(x => x.Resource).FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<Location> GetAsync(Name name)
-            => await this.context.Locations.FirstOrDefaultAsync(x => x.Name == name);
+            => await context.Locations.Include(x => x.Resources).ThenInclude(x => x.Resource).FirstOrDefaultAsync(x => x.Name == name);
 
-        public async Task<Location> GetFirstOrDefaultByResource(Resource resource)
+        public async Task<Location> GetFirstOrDefaultByResourceAsync(Resource resource)
             => await context.Locations.FirstOrDefaultAsync(x => x.Resources.OrderByDescending(r => r.CreatedAt).First().Resource == resource);
 
+        public async Task<IEnumerable<Location>> GetAllByResourceAsync(Resource resource)
+            => await context.Locations.Include(x => x.Resources).ThenInclude(x => x.Resource).Where(x => x.Resources.Any(x => x.Resource == resource)).ToListAsync();
         public async Task RemoveAsync(Location location)
         {
-            this.context.Locations.Remove(location);
+            context.Locations.Remove(location);
             await Task.CompletedTask;
         }
     }

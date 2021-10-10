@@ -9,9 +9,9 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services.Interf
     public interface ILocationService : IService
     {
         Task<LocationDto> CreateLocationAsync(AddLocationPayload payload);
-        Task<LocationDto> GetLocationAsync(Guid id);
+        Task<LocationDto> GetLocationAsync(string locationName);
         Task<IEnumerable<LocationDto>> GetAllLocationsAsync();
         Task<IEnumerable<LocationDto>> GetLocationsByResourceAsync(string uniqueResourceIdentifier);
-        Task RemoveLocationAsync(string name);
+        Task RemoveLocationAsync(string locationName);
     }
 }

@@ -7,18 +7,19 @@ using ResourcesManager.Services.ParkingPlaces.Infrastructure.Models.Dtos;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Models.Payloads;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Repositories.Interfaces;
 using ResourcesManager.Services.ParkingPlaces.Infrastructure.Services.Interfaces;
-using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
 {
-    public class LocationService : ILocationService
+    public class LocationService : BaseService, ILocationService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
         public LocationService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -41,24 +42,54 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
             return mapper.Map<LocationDto>(location);
         }
 
-        public Task<IEnumerable<LocationDto>> GetAllLocationsAsync()
+        public async Task<IEnumerable<LocationDto>> GetAllLocationsAsync()
         {
-            throw new NotImplementedException();
+            var locations = await unitOfWork.Locations.GetAllAsync();
+            locations.GetValidator()
+                .Throw(new CustomException(ErrorCodes.LocationNotFound, "Any locations exist.").WithCode(System.Net.HttpStatusCode.NotFound))
+                .WhenIsNull()
+            .Validate();
+
+            var locationsDto = mapper.Map<IEnumerable<LocationDto>>(locations);
+
+            return locationsDto;
         }
 
-        public Task<LocationDto> GetLocationAsync(Guid id)
+        public async Task<LocationDto> GetLocationAsync(string locationName)
         {
-            throw new NotImplementedException();
+            var location = await ValidateThrowWhenNotFoundAndGetLocationAsync(locationName);
+
+            var locationDto = mapper.Map<LocationDto>(location);
+
+            return locationDto;
         }
 
-        public Task<IEnumerable<LocationDto>> GetLocationsByResourceAsync(string uniqueResourceIdentifier)
+        public async Task<IEnumerable<LocationDto>> GetLocationsByResourceAsync(string uniqueResourceIdentifier)
         {
-            throw new NotImplementedException();
+            var resource = await unitOfWork.Resources.GetAsync(new UniqueResourceIdentifier(uniqueResourceIdentifier));
+            resource.GetValidator()
+                .Throw(new CustomException(ErrorCodes.ResourceNotFound, $"Resource with unique identifier '{uniqueResourceIdentifier}' does not exist.").WithCode(HttpStatusCode.NotFound))
+                .WhenIsNull()
+            .Validate();
+
+            var locations = await unitOfWork.Locations.GetAllByResourceAsync(resource);
+            locations.GetValidator()
+                .Throw(new CustomException(ErrorCodes.LocationNotFound, $"Location with resource'{uniqueResourceIdentifier}' does not exist.").WithCode(HttpStatusCode.NotFound))
+                .WhenIsNull()
+            .Validate();
+
+            var locationsDto = mapper.Map<IEnumerable<LocationDto>>(locations);
+
+            return locationsDto;
         }
 
-        public Task RemoveLocationAsync(string name)
+        public async Task RemoveLocationAsync(string locationName)
         {
-            throw new NotImplementedException();
+            var location = await ValidateThrowWhenNotFoundAndGetLocationAsync(locationName);
+            //TODO : Validate if location is used for any reservation
+
+            await unitOfWork.Locations.RemoveAsync(location);
+            await unitOfWork.SaveAsync();
         }
     }
 }

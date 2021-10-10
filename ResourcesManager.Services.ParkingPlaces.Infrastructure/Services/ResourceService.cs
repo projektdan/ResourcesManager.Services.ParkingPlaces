@@ -11,15 +11,17 @@ using ResourcesManager.Services.ParkingPlaces.Infrastructure.Services.Interfaces
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
 {
-    public class ResourceService : IResourceService
+    public class ResourceService : BaseService, IResourceService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
         public ResourceService(IUnitOfWork unitOfWork, IMapper mapper)
+            : base(unitOfWork)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -32,7 +34,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
 
             var resource = await this.unitOfWork.Resources.GetAsync(uniqueResourceIdentifier);
             resource.GetValidator()
-                .Throw(new CustomException(ErrorCodes.ResourceAlreadyExists, $"Resource with identifier '{payload.UniqueResourceIdentifier}' already exists."))
+                .Throw(new CustomException(ErrorCodes.ResourceAlreadyRegistered, $"Resource with identifier '{payload.UniqueResourceIdentifier}' already exists."))
                 .WhenIsNotNull()
             .Validate();
 
@@ -46,11 +48,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
 
         public async Task<ResourceDto> GetResourceAsync(string uniqueResourceIdentifier)
         {
-            var resource = await this.unitOfWork.Resources.GetAsync(new UniqueResourceIdentifier(uniqueResourceIdentifier));
-            resource.GetValidator()
-                .Throw(new CustomException(ErrorCodes.ResourceNotFound, $"Resource '{uniqueResourceIdentifier}' does not exist.").WithCode(HttpStatusCode.NotFound))
-                .WhenIsNull()
-            .Validate();
+            var resource = await ValidateThrowWhenNotFoundAndGetResourceAsync(uniqueResourceIdentifier);
 
             var deviceDto = this.mapper.Map<ResourceDto>(resource);
 
@@ -60,9 +58,8 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
         public async Task<IEnumerable<ResourceDto>> GetAllResourcesAsync()
         {
             var resources = await unitOfWork.Resources.GetAllAsync();
-
             resources.GetValidator()
-                .Throw(new CustomException(ErrorCodes.LackOfResources, $"Any resources exist.").WithCode(HttpStatusCode.NotFound))
+                .Throw(new CustomException(ErrorCodes.ResourceNotFound, $"Any resources exist.").WithCode(HttpStatusCode.NotFound))
                 .WhenIsNull()
             .Validate();
 
@@ -73,16 +70,11 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
 
         public async Task RemoveResourceAsync(string uniqueResourceIdentifier)
         {
-            var resource = await this.unitOfWork.Resources.GetAsync(new UniqueResourceIdentifier(uniqueResourceIdentifier));
-            resource.GetValidator()
-                .Throw(new CustomException(ErrorCodes.ResourceNotFound, $"Resource '{uniqueResourceIdentifier}' does not exist.").WithCode(HttpStatusCode.NotFound))
-                .WhenIsNull()
-            .Validate();
+            var resource = await ValidateThrowWhenNotFoundAndGetResourceAsync(uniqueResourceIdentifier);
 
-            var location = await this.unitOfWork.Locations.GetFirstOrDefaultByResource(resource);
-
+            var location = await this.unitOfWork.Locations.GetFirstOrDefaultByResourceAsync(resource);
             location.GetValidator()
-                .Throw(new CustomException(ErrorCodes.ResourceIsInUse, $"There is at least one location which use '{uniqueResourceIdentifier}'."))
+                .Throw(new CustomException(ErrorCodes.ResourceIsInUse, $"There is at least one location which use '{uniqueResourceIdentifier}'.").WithCode(HttpStatusCode.BadRequest))
                 .WhenIsNotNull()
             .Validate();
 
@@ -92,43 +84,32 @@ namespace ResourcesManager.Services.ParkingPlaces.Infrastructure.Services
 
         public async Task RegisterResourceInLocationAsync(string uniqueResourceIdentifier, int resourceQuantity, string locationName)
         {
-            var location = await unitOfWork.Locations.GetAsync(new Name(locationName));
-            location.GetValidator()
-                .Throw(new CustomException(ErrorCodes.LocationNotFound, $"Location '{locationName}' does not exist."))
-                .WhenIsNull()
-            .Validate();
+            var location = await ValidateThrowWhenNotFoundAndGetLocationAsync(locationName);
+            var resource = await ValidateThrowWhenNotFoundAndGetResourceAsync(uniqueResourceIdentifier);
 
-            var resource = await unitOfWork.Resources.GetAsync(new UniqueResourceIdentifier(uniqueResourceIdentifier));
-            resource.GetValidator()
-                .Throw(new CustomException(ErrorCodes.ResourceNotFound))
-                .WhenIsNull()
-            .Validate();
-
-            var locationResource = location.AddOrUpdateResource(resource, new ResourceQuantity(resourceQuantity));
-            //TODO : Change logic of updating data, it doesn't work
-            //var locationResource = new LocationResource(location, resource, new ResourceQuantity(resourceQuantity));
+            var locationResource = location.RegisterResource(resource, new ResourceQuantity(resourceQuantity));
             await unitOfWork.LocationResources.AddAsync(locationResource);
             await unitOfWork.SaveAsync();
         }
 
         public async Task UnregisterResourceFromLocationAsync(string uniqueResourceIdentifier, string locationName)
         {
-            var location = await unitOfWork.Locations.GetAsync(new Name(locationName));
-            location.GetValidator()
-                .Throw(new CustomException(ErrorCodes.LocationNotFound, $"Location '{locationName}' does not exist."))
-                .WhenIsNull()
-            .Validate();
+            var location = await ValidateThrowWhenNotFoundAndGetLocationAsync(locationName);
             var resource = await unitOfWork.Resources.GetAsync(new UniqueResourceIdentifier(uniqueResourceIdentifier));
-                
-            var locationResourceToRemove = location.RemoveResource(resource);
+            var locationResourceToRemove = location.UnregisterResource(resource);
 
             await unitOfWork.LocationResources.RemoveAsync(locationResourceToRemove);
             await unitOfWork.SaveAsync();
         }
 
-        public async Task UpdateQuantityResourceInLocation(string uniqueResourceIdentifier, int resourceQuantity, string locationName)
+        public async Task UpdateResourceInLocation(string uniqueResourceIdentifier, int resourceQuantity, string locationName)
         {
-
+            var location = await ValidateThrowWhenNotFoundAndGetLocationAsync(locationName);
+            var locationResource = location.Resources.FirstOrDefault(r => r.Resource.UniqueResourceIdentifier.Value == uniqueResourceIdentifier);
+            locationResource.SetQuantity(new ResourceQuantity(resourceQuantity));
+            
+            await unitOfWork.LocationResources.UpdateAsync(locationResource);
+            await unitOfWork.SaveAsync();
         }
     }
 }

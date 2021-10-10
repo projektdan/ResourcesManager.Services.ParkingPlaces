@@ -98,5 +98,25 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("{location_name}/resources/{uniqe_resource_identifier}/unregister")]
+        public async Task<IActionResult> UnregisterResourceInLocation([FromRoute] string location_name,
+            [FromRoute] string uniqe_resource_identifier)
+        {
+            var request = new UnregisterResourceInLocationRequest(location_name, uniqe_resource_identifier);
+            await mediator.Send(request);
+
+            return NoContent();
+        }
+
+        [HttpPatch("{location_name}/resources/{uniqe_resource_identifier}/{resource_quantity}/update")]
+        public async Task<IActionResult> UpdateResourceInLocation([FromRoute] string location_name,
+            [FromRoute] string uniqe_resource_identifier, [FromRoute] int resource_quantity)
+        {
+            var request = new UpdateResourceInLocationRequest(uniqe_resource_identifier, resource_quantity, location_name);
+            await mediator.Send(request);
+
+            return NoContent();
+        }
     }
 }
