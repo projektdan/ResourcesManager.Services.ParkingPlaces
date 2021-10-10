@@ -62,12 +62,16 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
 
             this.Name = name;
         }
-
-        public LocationResource AddOrUpdateResource(Resource resource, ResourceQuantity quantity)
+        //TODO : Move to resource
+        public LocationResource RegisterResource(Resource resource, ResourceQuantity quantity)
         {
             if (resource is null)
             {
                 throw new NullEntityException<Resource>();
+            }
+            if (Resources.Any(x => x.Resource == resource))
+            {
+                throw new ResourceAlreadyRegistered(resource);
             }
             if (quantity.Value <= 0)
             {
@@ -75,21 +79,13 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
             }
 
             var locationResource = new LocationResource(this, resource, quantity);
-
-            var isResourceExist = resources.Any(x => x.Resource == resource);
-            if (isResourceExist)
-            {
-                var resourceToRemove = resources.FirstOrDefault(x => x.Resource == resource);
-                resources.Remove(resourceToRemove);
-            }
-
             resources.Add(locationResource);
             Update();
 
             return locationResource;
         }
-
-        public LocationResource RemoveResource(Resource resource)
+        
+        public LocationResource UnregisterResource(Resource resource)
         {
             if (resource is null)
             {

@@ -1,4 +1,5 @@
 ﻿using ResourcesManager.Services.ParkingPlaces.Core.Domain.ValueObjects;
+using ResourcesManager.Services.ParkingPlaces.Core.Exceptions;
 using System;
 
 namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
@@ -22,6 +23,16 @@ namespace ResourcesManager.Services.ParkingPlaces.Core.Domain
         {
         }
 
+        //TODO : Write test
+        public void SetQuantity(ResourceQuantity quantity)
+        {
+            if (quantity.Value <= 0)
+            {
+                throw new InvalidQuantityValueException(nameof(quantity));
+            }
 
+            ResourceQuantity = quantity;
+            Update();
+        }
     }
 }
