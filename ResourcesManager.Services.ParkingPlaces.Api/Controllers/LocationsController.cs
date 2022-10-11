@@ -48,18 +48,18 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Controllers
             return Ok(result);
         }
 
-        ///// <summary>
-        ///// Get all locations by Resource
-        ///// </summary>
-        ///// <returns></returns>
-        //[HttpGet("find_by_resource/{unique_resource_identifier}")]
-        //public async Task<ActionResult<IEnumerable<LocationDto>>> GetAllByResource([FromRoute]string unique_resource_identifier)
-        //{
-        //    var request = new 
-        //    var result = await mediator.Send(request);
+        /// <summary>
+        /// Get all locations by Resource
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("find/{unique_resource_identifier}")]
+        public async Task<ActionResult<IEnumerable<LocationDto>>> GetAllByResource([FromRoute] string unique_resource_identifier)
+        {
+            var request = new GetAllLocationsByResourceRequest(unique_resource_identifier);
+            var result = await mediator.Send(request);
 
-        //    return Ok(result);
-        //}
+            return Ok(result);
+        }
 
         /// <summary>
         /// Add location
@@ -80,7 +80,7 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Controllers
         {
             var request = new RemoveLocationRequest(location_name);
             await mediator.Send(request);
-
+            
             return NoContent();
         }
     }

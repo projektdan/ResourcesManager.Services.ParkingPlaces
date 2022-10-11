@@ -99,6 +99,12 @@ namespace ResourcesManager.Services.ParkingPlaces.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="location_name"></param>
+        /// <param name="uniqe_resource_identifier"></param>
+        /// <returns></returns>
         [HttpDelete("{location_name}/resources/{uniqe_resource_identifier}/unregister")]
         public async Task<IActionResult> UnregisterResourceInLocation([FromRoute] string location_name,
             [FromRoute] string uniqe_resource_identifier)
